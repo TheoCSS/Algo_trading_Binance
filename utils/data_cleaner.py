@@ -6,11 +6,13 @@ import matplotlib.pyplot as plt
 import os
 
 def cleaner(df):
-    if "ignore" in df.columns:
-        df = df.drop(columns=["ignore"])
+    df = df.drop(columns=["ignore"])
     df["log_return"] = np.log(df["close"]/df["open"])
-    df["volume"] = df["volume"].replace(0, np.nan)  # Remplace 0 par NaN
+    df["volume"] = df["volume"].replace(0, np.nan).dropna()
     df["log_vol"] = np.log(df["volume"])
+    df["openTime"] = df["openTime"]
+    df["numberOfTrades"] = df["numberOfTrades"].replace(0, np.nan).dropna()
+    df["log_num_trades"] = np.log(df["numberOfTrades"])
     return df
 
 def detect_high_of_day(df):
